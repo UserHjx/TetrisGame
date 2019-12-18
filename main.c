@@ -224,6 +224,7 @@ void welcome()
 	{
 		case 1:
 			system("cls");//清屏
+			DrwaGameframe(); 
 			break;
 		case 2:
 			//
@@ -236,6 +237,302 @@ void welcome()
 			break;
 	}
 }
+void DrwaGameframe()
+{
+	gotoxy(FrameX+Frame_width-7,FrameY-2);//设置游戏名称的显示位置
+	color(11);//亮蓝色
+	printf("趣味俄罗斯方块");
+	gotoxy(FrameX+2*Frame_width+3,FrameY+7);//上边框的显示位置
+	color(2);
+	printf("**********");// 
+	gotoxy(FrameX+2*Frame_width+13,FrameY+7);
+	color(3);
+	printf("下一个出现的方块：");
+	gotoxy(FrameX+2*Frame_width+3,FrameY+13);
+	color(2);
+	printf("**********");
+	gotoxy(FrameX+2*Frame_width+3,FrameY+17);
+	color(14);
+	printf("↑键：旋转");
+	gotoxy(FrameX+2*Frame_width+3,FrameY+19);
+	printf("空格：暂停游戏");
+	gotoxy(FrameX+2*Frame_width+3,FrameY+15);
+	printf("Esc：退出游戏");
+	gotoxy(FrameX,FrameY);
+	color(12);
+	printf("╔");
+	gotoxy(FrameX+2*Frame_width-2,FrameY);
+	printf("╗");
+	gotoxy(FrameX,FrameY+Frame_height);
+	printf("╚");
+	gotoxy(FrameX+2*Frame_width-2,FrameY+Frame_height);
+	printf("╝");	
+	a[FrameX][FrameY+Frame_height]=2;
+	a[FrameX+2*Frame_width-2][FrameY+Frame_height]=2;
+	for(i=2;i<2*Frame_width-2;i+=2)
+	{
+		gotoxy(FrameX+i,FrameY);
+		printf("═");
+	}
+	for(i=2;i<2*Frame_width-2;i+=2)
+	{
+		gotoxy(FrameX+i,FrameY+Frame_height);
+		printf("═");
+		a[FrameX+i][FrameY+Frame_height]=2;//标记下横框为游戏边框，防止方块越界 
+	}
+	for(i=1;i<Frame_height;i++)
+	{
+		gotoxy(FrameX,FrameY+i);
+		printf("║");	
+		a[FrameX][FrameY+i]=2;//标记左横框为游戏边框，防止方块越界 
+	} 
+	for(i=1;i<Frame_height;i++)
+	{
+		gotoxy(FrameX+2*Frame_width-2,FrameY+i);
+		printf("║");	
+		a[FrameX][FrameY+i]=2;//标记右横框为游戏边框，防止方块越界 
+	} 
+}
+void MakeTertris(struct Tetris *tetris)
+{
+	a[tetris->x][tetris->y]=b[0];//中心方块位置的图形状态
+	switch(tetris->flag)
+	{
+		case 1 :/*田字方块 
+		1 ■■2
+		0 ■■3
+		 */              
+		{
+			color(10);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x+2][tetris->y-1]=b[2];
+			a[tetris->x+2][tetris->y]=b[3];
+			break;
+		}
+		case 2 :/*一字方块
+		 ■■■■
+		 1 0 2 3  */                            
+		{
+			color(13);
+			a[tetris->x-2][tetris->y]=b[1];
+			a[tetris->x+2][tetris->y]=b[2];
+			a[tetris->x+4][tetris->y]=b[3];
+			break;
+		}
+		case 3 :/*竖一字方块
+		 ■1
+		 ■0
+		 ■2
+		 ■3  */                            
+		{
+			color(13);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x][tetris->y-2]=b[2];
+			a[tetris->x][tetris->y+1]=b[3];
+			break;
+		}
+		case 4 :/*T字方块 
+		1 0 2
+		■■■
+		  ■3   */                            
+		{
+			color(11);
+			a[tetris->x-2][tetris->y]=b[1];
+			a[tetris->x+2][tetris->y]=b[2];
+			a[tetris->x][tetris->y+1]=b[3];
+			break;
+		}
+		case 5 :/*顺时针90度T字方块 
+		  ■1
+	   3■■0
+		  ■2*/                            
+		{
+			color(11);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x][tetris->y+1]=b[2];
+			a[tetris->x-2][tetris->y]=b[3];
+			break;
+		}	
+		case 6 :/*顺时针180度T字方块 
+		   ■1
+		 ■■■
+		 2 0 3  */                         
+		{
+			color(11);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x-2][tetris->y]=b[2];
+			a[tetris->x+2][tetris->y]=b[3];
+			break;
+		}
+		case 7 :/*顺时针270度T字方块
+			■1
+		   0■■3
+			■2	*/                            
+		{
+			color(11);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x][tetris->y+1]=b[2];
+			a[tetris->x+2][tetris->y]=b[3];
+			break;
+		}	
+		case 8 :/*正Z字方块 
+		2 0
+		■■
+		  ■■
+		  1 3    */                            
+		{
+			color(14);
+			a[tetris->x][tetris->y+1]=b[1];
+			a[tetris->x-2][tetris->y]=b[2];
+			a[tetris->x+2][tetris->y+1]=b[3];
+			break;
+		}	
+		case 9 :/*顺时针正Z字方块
+		   ■1
+		2■■0
+		3■
+		 */                            
+		{
+			color(14);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x-2][tetris->y]=b[2];
+			a[tetris->x-2][tetris->y+1]=b[3];
+			break;
+		}	
+		case 10 :/*反Z字方块 
+		   1 3
+		   ■■
+		 ■■
+		 2 0
+		   */                            
+		{
+			color(14);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x-2][tetris->y]=b[2];/////****自修改*****///////
+			a[tetris->x+2][tetris->y-1]=b[3];
+			break;
+			/*****原代码******
+			color(14);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x-2][tetris->y-1]=b[2];
+			a[tetris->x+2][tetris->y]=b[3];	 
+			break; 
+			*/
+		}	
+		case 11 :/*顺时针90度反Z字方块
+		 2■
+		 3■■0
+		    ■1
+		   */                            
+		{
+			color(14);
+			a[tetris->x][tetris->y+1]=b[1];
+			a[tetris->x-2][tetris->y-1]=b[2];
+			a[tetris->x-2][tetris->y]=b[3];
+			break;
+		}	
+		case 12 :/*7字方块 
+		3■■1
+		   ■0
+		   ■2
+		  */                            
+		{
+			color(12);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x][tetris->y+1]=b[2];
+			a[tetris->x-2][tetris->y-1]=b[3];
+			break;
+		}	
+		case 13 :/*顺时针90度7字方块
+		 	 ■2
+		 ■■■
+		 1 0 3
+		 */                            
+		{
+			color(12);
+			a[tetris->x-2][tetris->y]=b[1];
+			a[tetris->x+2][tetris->y-1]=b[2];
+			a[tetris->x+2][tetris->y]=b[3];
+			break;
+		}
+		case 14 :/*顺时针180度7字方块
+		1■
+		0■
+		2■■3
+		*/                            
+		{
+			color(12);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x][tetris->y+1]=b[2];
+			a[tetris->x+2][tetris->y+1]=b[3];
+			break;
+		}			
+		case 15 :/*顺时针270度7字方块
+		 1 0 3
+		 ■■■
+		 ■
+		 2
+		 */                            
+		{ 
+			color(12);
+			a[tetris->x-2][tetris->y]=b[1];
+			a[tetris->x-2][tetris->y+1]=b[2];
+			a[tetris->x+2][tetris->y]=b[3];
+			break;
+		}			
+		case 16 :/*反7字方块
+		  2■■3
+		  0■
+		  1■
+		  */                            
+		{
+			color(12);
+			a[tetris->x][tetris->y+1]=b[1];
+			a[tetris->x][tetris->y-1]=b[2];
+			a[tetris->x+2][tetris->y-1]=b[3];
+			break;
+		}			
+		case 17 :/*顺时针90度反7字方块 
+		1 0 3
+		■■■
+		    ■2
+		*/                            
+		{
+			color(12);
+			a[tetris->x-2][tetris->y]=b[1];
+			a[tetris->x+2][tetris->y+1]=b[2];
+			a[tetris->x+2][tetris->y]=b[3];
+			break;
+		}			
+		case 18 :/*顺时针180度反7字方块
+		   ■1
+		   ■0
+		 ■■2
+		 3
+		 */                            
+		{
+			color(12);
+			a[tetris->x][tetris->y-1]=b[1];
+			a[tetris->x][tetris->y+1]=b[2];
+			a[tetris->x-2][tetris->y+1]=b[3];
+			break;
+		}			
+		case 19 :/*顺时针270度反7字方块
+		 2
+		 ■
+		 ■■■
+		 1 0 3
+		 */                            
+		{
+			color(12);
+			a[tetris->x-2][tetris->y]=b[1];
+			a[tetris->x-2][tetris->y-1]=b[2];
+			a[tetris->x+2][tetris->y]=b[3];
+			break;
+		}									
+	} 
+}
+  
 
   
 
