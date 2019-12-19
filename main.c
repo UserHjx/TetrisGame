@@ -293,7 +293,7 @@ void DrwaGameframe()
 		a[FrameX][FrameY+i]=2;//标记右横框为游戏边框，防止方块越界 
 	} 
 }
-void MakeTertris(struct Tetris *tetris)
+void MakeTetris(struct Tetris *tetris)
 {
 	a[tetris->x][tetris->y]=b[0];//中心方块位置的图形状态
 	switch(tetris->flag)
@@ -532,6 +532,175 @@ void MakeTertris(struct Tetris *tetris)
 		}									
 	} 
 }
+
+void PrintfTetris(struct Tetris *tetris)
+{
+	for(i =0;i<4;i++)//把每个元素的值都为1 
+	{
+		b[i]=1;	
+	}
+		
+	MakeTetris(tetris);//制作俄罗斯方块 
+	for(i=tetris->x-2;i<=tetris->x+4;i+=2)
+	{
+		for(j=tetris->y-2;j<=tetris->y+1;j++)//循环方块所有可能出现的位置 
+		{
+			if(a[i][j]==1&&j>FrameY+1)//如果这个位置上有方块 
+			{
+				gotoxy(i,j);
+				printf("■");
+			} 
+		} 
+		
+	}
+	//*******打印菜单信息********
+	
+	gotoxy(FrameX+2*Frame_width+3,FrameY+1);//设置打印位置
+	color(4);
+	printf("level: ");
+	color(12);
+	printf(" %d",tetris->level);
+	gotoxy(FrameX+2*Frame_width+3,FrameY+3);
+	color(4);
+	printf("score: ");
+	color(12);
+	printf(" %d",tetris->score);
+	gotoxy(FrameX+2*Frame_width+3,FrameY+5);
+	color(4);
+	printf("speed :");
+	color(12);
+	printf(" %dms",tetris->speed);
+}
+int ifMove(struct Tetris *tetris) 
+{
+	if(a[tetris->x][tetris->y]!=0)//当中心位置上有图案时，返回值为0，即不可移动 
+	{
+		return 0; 
+	}
+	else
+	{
+		/*
+			旋转全是顺时针 
+			1.田字方块  
+			2.一字方块（横）  3.一字方块（竖） 
+			4.T字方块  5.T字方块90度  6.T字方块180度   7.T字方块270度
+			8.Z字方块  9.Z字方块180度  
+			10.反Z字方块  11.反Z字方块180度 
+			12.7字方块  13.7字方块90度   14.7字方块180度  15.7字方块270度
+			16.反7字方块  17.反7字方块90度  18.反7字方块180度  19.反7字方块270度
+	    */
+		if(
+		/*当为方块的flag值为1（1为田字方块）且除中心方块位置外，其他“■”字方块位置上无图案时，说明这个位置能够放下田字方块，可以移动到这个位置 ，返回值为1，即可移动 */
+		( tetris->flag==1 && ( a[tetris->x][tetris->y-1]==0 && a[tetris->x+2][tetris->y-1]==0 && a[tetris->x+2][tetris->y]==0 ) ) || 
+		( tetris->flag==2 && ( a[tetris->x-2][tetris->y]==0 && a[tetris->x+2][tetris->y]==0 && a[tetris->x+4][tetris->y]==0 ) ) ||
+		( tetris->flag==3 && ( a[tetris->x][tetris->y-1]==0 && a[tetris->x][tetris->y-2]==0 && a[tetris->x][tetris->y+1]==0  )) ||
+		( tetris->flag==4 && ( a[tetris->x-2][tetris->y]==0 && a[tetris->x+2][tetris->y]==0 && a[tetris->x][tetris->y+1]==0  )) ||
+		( tetris->flag==5 && ( a[tetris->x][tetris->y-1]==0 && a[tetris->x][tetris->y+1]==0 && a[tetris->x-2][tetris->y]==0  )) ||
+		( tetris->flag==6 && ( a[tetris->x][tetris->y-1]==0 && a[tetris->x-2][tetris->y]==0 && a[tetris->x+2][tetris->y]==0  )) ||
+		( tetris->flag==7 && ( a[tetris->x][tetris->y-1]==0 && a[tetris->x][tetris->y+1]==0 && a[tetris->x+2][tetris->y]==0  )) ||
+		( tetris->flag==8 && ( a[tetris->x][tetris->y+1]==0 && a[tetris->x-2][tetris->y]==0 && a[tetris->x+2][tetris->y+1]==0  )) ||
+		( tetris->flag==9 && ( a[tetris->x][tetris->y-1]==0 && a[tetris->x-2][tetris->y]==0 && a[tetris->x-2][tetris->y+1]==0  )) ||
+		( tetris->flag==10 && ( a[tetris->x][tetris->y-1]==0 && a[tetris->x-2][tetris->y]==0 && a[tetris->x+2][tetris->y-1]==0  )) ||
+		( tetris->flag==11 && ( a[tetris->x][tetris->y+1]==0 && a[tetris->x-2][tetris->y-1]==0 && a[tetris->x-2][tetris->y]==0  )) ||
+		( tetris->flag==12 && ( a[tetris->x][tetris->y-1]==0 && a[tetris->x][tetris->y+1]==0 && a[tetris->x-2][tetris->y-1]==0  )) ||
+		( tetris->flag==13 && ( a[tetris->x-2][tetris->y]==0 && a[tetris->x+2][tetris->y-1]==0 && a[tetris->x+2][tetris->y]==0  )) ||
+		( tetris->flag==14 && ( a[tetris->x][tetris->y-1]==0 && a[tetris->x][tetris->y+1]==0 && a[tetris->x+2][tetris->y+1]==0  )) ||
+		( tetris->flag==15 && ( a[tetris->x-2][tetris->y]==0 && a[tetris->x-2][tetris->y+1]==0 && a[tetris->x+2][tetris->y]==0  )) ||
+		( tetris->flag==16 && ( a[tetris->x][tetris->y+1]==0 && a[tetris->x][tetris->y-1]==0 && a[tetris->x+2][tetris->y-1]==0  )) ||
+		( tetris->flag==17 && ( a[tetris->x-2][tetris->y]==0 && a[tetris->x+2][tetris->y+1]==0 && a[tetris->x+2][tetris->y]==0  )) ||
+		( tetris->flag==18 && ( a[tetris->x][tetris->y-1]==0 && a[tetris->x][tetris->y+1]==0 && a[tetris->x-2][tetris->y+1]==0  )) ||
+		( tetris->flag==19 && ( a[tetris->x-2][tetris->y]==0 && a[tetris->x-2][tetris->y-1]==0 && a[tetris->x+2][tetris->y]==0  )) 
+		)
+		{
+			return 1; 
+		} 
+	}
+	return 0;
+}
+void CleanTetris(struct Tetris *tetris)
+{
+	for(i=0;i<4;i++)//全部归零 
+	{
+		b[i]=0; 
+	}
+	MakeTetris(tetris);
+	for( i = tetris->x - 2 ;i <= tetris->x+4; i += 2)
+	{
+		for(j = tetris->y-2; j <= tetris->y+1;j++)
+		{
+			if(a[i][j] == 0 && j>FrameY)
+			{
+				gotoxy(i,j);
+				printf(" ");
+			}
+		}	
+		
+	} 	
+}
+void Del_Fullline(struct Tetris *tetris)//当某行有Frame_width-2个方块时，则满行消除
+{
+	int k,del_rows=0;//分别用于记录某行方块的个数和删除方块的行数的变量 
+	for(j=FrameY+Frame_height-1;j>=FrameY+1;j--)
+	{//j=22,j>=4,j--
+		k=0;
+		for(i=FrameX+2;i<FrameX+2*Frame_width-2;i+=2)//纵坐标依次从下往上，横坐标依次由左至右判断是否满行 
+		{//i=15;i<(13+34)
+			if(a[i][j]==1)
+			{
+				k++;//记录此行方块的个数 
+				if(k==Frame_width-2)//如果满行 
+				{
+					for(k=FrameX+2;k<Frame_width-2;k+=2)//删除满行的方块 
+					{
+						a[k][j]=0;
+						gotoxy(k,j);
+						printf(" "); 
+					}
+					
+					for(k=j-1;k>FrameY;k--)//如果删除行以上的位置有方块，则先消除，再将方块下移一个位置 
+					{//(第一次)k=21;k>3;k--
+						for(i=FrameX+2;i<FrameX+2*Frame_width-2;i+=2)
+						{//i=15;i<47;i+=2 
+							if(a[i][k]==1)
+							{
+								a[i][k]=0;
+								gotoxy(i,k);
+								printf(" ");
+								a[i][k+1]=1;
+								gotoxy(i,k+1);
+								printf("■");
+							}	
+						} 
+					}
+					j++;//方块下移后，重新判断删除行是否满行
+					del_rows++;//记录删除方块的行数 		
+				}	
+			} 
+		}	
+	}
+	tetris->score+=100*del_rows;//每删除一行，得100分
+	if(del_rows>0 && ( tetris->score % 1000 == 0 || tetris->score/1000>tetris->level-1))
+	{//如果的1000分 即累计删除了10行， 速度加快20ms并升一级 
+		tetris->speed-=20;
+		tetris->level++; 
+	} 
+} 
+void Flag(struct Tetris *tetris)
+{
+	tetris->number++;//记住产生方块的个数
+	/*srand函数是随机数发生器的初始化函数。原型：void srand(unsigned int seed);srand和rand()配合使用产生伪随机数序列。
+	srand()函数位于time.h头文件当中 
+	*/	
+	srand(time(NULL));//初始化随机数
+
+	if(tetris->number==1)
+	{
+		tetris->flag = (rand()%19)+1;//记住第一个方块的序号 
+	} 
+	 tetris->next=rand()%19+1;//记住下一个方块的序号 
+		
+} 
+
   
 
   
