@@ -3,8 +3,6 @@
 #include <windows.h> //¿ØÖÆDOS½çÃæ(»ñÈ¡¿ØÖÆÌ¨ÉÏµÄ×ø±êÎ»ÖÃ¡¢ÉèÖÃ×ÖÌåÑÕÉ«)
 #include <conio.h> //½ÓÊÕ¼üÅÌµÄÊäÈëºÍÊä³ö(Kbhit(),getch())
 #include <time.h> //ÓÃÓÚ»ñµÃËæ»úÊı
-//#include "AllCode.c" 
-
 
 /*******ºê¶¨Òå********/
 #define FrameX 13 //ÓÎÏ·´°¿Ú×óÉÏ½ÇµÄXÖá×ø±êÎª13
@@ -180,7 +178,7 @@ void flower()
 	
 	gotoxy(66,19);
 	color(5);
-	printf("ºÎ  ½õ  ÏÍ"); 		
+	printf("ÖÆ×÷£º</hjx>"); 		
 }
 void welcome()
 {
@@ -225,6 +223,7 @@ void welcome()
 		case 1:
 			system("cls");//ÇåÆÁ
 			DrwaGameframe(); 
+			Gameplay();//¿ªÊ¼ 
 			break;
 		case 2:
 			//
@@ -260,37 +259,37 @@ void DrwaGameframe()
 	printf("Esc£ºÍË³öÓÎÏ·");
 	gotoxy(FrameX,FrameY);
 	color(12);
-	printf("¨X");
+	printf("©±");
 	gotoxy(FrameX+2*Frame_width-2,FrameY);
-	printf("¨[");
+	printf("©µ");
 	gotoxy(FrameX,FrameY+Frame_height);
-	printf("¨^");
+	printf("©¹");
 	gotoxy(FrameX+2*Frame_width-2,FrameY+Frame_height);
-	printf("¨a");	
+	printf("©½");	
 	a[FrameX][FrameY+Frame_height]=2;
 	a[FrameX+2*Frame_width-2][FrameY+Frame_height]=2;
 	for(i=2;i<2*Frame_width-2;i+=2)
 	{
 		gotoxy(FrameX+i,FrameY);
-		printf("¨T");
+		printf("©­");
 	}
 	for(i=2;i<2*Frame_width-2;i+=2)
 	{
 		gotoxy(FrameX+i,FrameY+Frame_height);
-		printf("¨T");
+		printf("©­");
 		a[FrameX+i][FrameY+Frame_height]=2;//±ê¼ÇÏÂºá¿òÎªÓÎÏ·±ß¿ò£¬·ÀÖ¹·½¿éÔ½½ç 
 	}
 	for(i=1;i<Frame_height;i++)
 	{
 		gotoxy(FrameX,FrameY+i);
-		printf("¨U");	
+		printf("©¯");	
 		a[FrameX][FrameY+i]=2;//±ê¼Ç×óºá¿òÎªÓÎÏ·±ß¿ò£¬·ÀÖ¹·½¿éÔ½½ç 
 	} 
 	for(i=1;i<Frame_height;i++)
 	{
 		gotoxy(FrameX+2*Frame_width-2,FrameY+i);
-		printf("¨U");	
-		a[FrameX][FrameY+i]=2;//±ê¼ÇÓÒºá¿òÎªÓÎÏ·±ß¿ò£¬·ÀÖ¹·½¿éÔ½½ç 
+		printf("©¯");	
+		a[FrameX+2*Frame_width-2][FrameY+i]=2;//±ê¼ÇÓÒºá¿òÎªÓÎÏ·±ß¿ò£¬·ÀÖ¹·½¿éÔ½½ç 
 	} 
 }
 void MakeTetris(struct Tetris *tetris)
@@ -408,10 +407,11 @@ void MakeTetris(struct Tetris *tetris)
 		{
 			color(14);
 			a[tetris->x][tetris->y-1]=b[1];
-			a[tetris->x-2][tetris->y]=b[2];/////****×ÔĞŞ¸Ä*****///////
+			a[tetris->x-2][tetris->y]=b[2];/////****×ÔĞŞ¸Ä*****
 			a[tetris->x+2][tetris->y-1]=b[3];
 			break;
-			/*****Ô­´úÂë******
+			/*
+			//*****Ô­´úÂë******
 			color(14);
 			a[tetris->x][tetris->y-1]=b[1];
 			a[tetris->x-2][tetris->y-1]=b[2];
@@ -533,7 +533,7 @@ void MakeTetris(struct Tetris *tetris)
 	} 
 }
 
-void PrintfTetris(struct Tetris *tetris)
+void PrintTetris(struct Tetris *tetris)
 {
 	for(i =0;i<4;i++)//°ÑÃ¿¸öÔªËØµÄÖµ¶¼Îª1 
 	{
@@ -553,8 +553,8 @@ void PrintfTetris(struct Tetris *tetris)
 		} 
 		
 	}
-	//*******´òÓ¡²Ëµ¥ĞÅÏ¢********
 	
+	//*******´òÓ¡²Ëµ¥ĞÅÏ¢********
 	gotoxy(FrameX+2*Frame_width+3,FrameY+1);//ÉèÖÃ´òÓ¡Î»ÖÃ
 	color(4);
 	printf("level: ");
@@ -631,7 +631,7 @@ void CleanTetris(struct Tetris *tetris)
 			if(a[i][j] == 0 && j>FrameY)
 			{
 				gotoxy(i,j);
-				printf(" ");
+				printf("  ");//ÕâÀïÒ»¶¨ÒªÊÇÁ½¸ö¿Õ¸ñ£¡£¡£¡ 
 			}
 		}	
 		
@@ -654,24 +654,26 @@ void Del_Fullline(struct Tetris *tetris)//µ±Ä³ĞĞÓĞFrame_width-2¸ö·½¿éÊ±£¬ÔòÂúĞĞÏ
 					{
 						a[k][j]=0;
 						gotoxy(k,j);
-						printf(" "); 
+						printf("  "); //Ò»¶¨ÒªÊÇÁ½¸ö¿Õ¸ñ 
 					}
-					
+					/*
 					for(k=j-1;k>FrameY;k--)//Èç¹ûÉ¾³ıĞĞÒÔÉÏµÄÎ»ÖÃÓĞ·½¿é£¬ÔòÏÈÏû³ı£¬ÔÙ½«·½¿éÏÂÒÆÒ»¸öÎ»ÖÃ 
-					{//(µÚÒ»´Î)k=21;k>3;k--
+					{
 						for(i=FrameX+2;i<FrameX+2*Frame_width-2;i+=2)
-						{//i=15;i<47;i+=2 
+						{
 							if(a[i][k]==1)
 							{
 								a[i][k]=0;
 								gotoxy(i,k);
-								printf(" ");
+								printf("  ");//Á½¸ö¿Õ¸ñ 
 								a[i][k+1]=1;
 								gotoxy(i,k+1);
-								printf("¡ö");
-							}	
+								printf("88");
+							}
+								
 						} 
 					}
+					*/
 					j++;//·½¿éÏÂÒÆºó£¬ÖØĞÂÅĞ¶ÏÉ¾³ıĞĞÊÇ·ñÂúĞĞ
 					del_rows++;//¼ÇÂ¼É¾³ı·½¿éµÄĞĞÊı 		
 				}	
@@ -700,9 +702,180 @@ void Flag(struct Tetris *tetris)
 	 tetris->next=rand()%19+1;//¼Ç×¡ÏÂÒ»¸ö·½¿éµÄĞòºÅ 
 		
 } 
-
-  
-
+void Gameplay()
+{
+	int n;
+	struct Tetris t,*tetris=&t;//¶¨Òå½á¹¹ÌåµÄÖ¸Õë²¢Ö¸Ïò½á¹¹Ìå±äÁ¿
+	char ch;//¶¨Òå½ÓÊÕ¼üÅÌÊäÈëµÄ±äÁ¿
+	tetris->number=0;//³õÊ¼»¯¶íÂŞË¹·½¿éÊıÎª0¸ö 
+	tetris->speed=300;//³õÊ¼ÒÆ¶¯ËÙ¶ÈÎª300ms 
+	tetris->score=0	;//³õÊ¼ÓÎÏ··ÖÊıÎª0·Ö 
+	tetris->level=1;//³õÊ¼ÎªµÚÒ»¹Ø 
+	while(1)//Ñ­»·²úÉú·½¿é£¬Ö±ÖÁÓÎÏ·½áÊø 
+	{
+		Flag(tetris);//µÃµ½²úÉú¶íÂŞË¹·½¿éÀàĞÍµÄĞòºÅ 
+		Temp=tetris->flag;//¼Ç×¡µ±Ç°¶íÂŞË¹·½¿éµÄĞòºÅ 
+		tetris->x=FrameX+2*Frame_width+6;//»ñµÃÔ¤ÀÀ½çÃæ·½¿éXµÄ×ø±ê 
+		tetris->y=FrameY+10;//»ñµÃÔ¤ÀÀ½çÃæ·½¿éYµÄ×ø±ê
+		tetris->flag = tetris->next;//»ñµÃÏÂÒ»¸ö¶íÂŞË¹·½¿éµÄĞòºÅ 
+		PrintTetris(tetris);//µ÷ÓÃ´òÓ¡¶íÂŞË¹·½¿éµÄ·½·¨ 
+		
+		tetris->x=FrameX+Frame_width;//»ñµÃÓÎÏ·´°¿ÚÖĞĞÄ·½¿éµÄX×ø±ê 
+		tetris->y=FrameY-1;//»ñµÃÓÎÏ·´°¿ÚÖĞĞÄ·½¿éµÄY×ø±ê 
+		tetris->flag=Temp;
+		
+		while(1)
+		{
+			//gotoÓï¾ä 
+			label:PrintTetris(tetris);//´òÓ¡¶íÂŞË¹·½¿é
+			Sleep(tetris->speed);//ÑÓ»ºÊ±¼ä
+			CleanTetris(tetris);//Çå³şºÛ¼£
+			Temp1=tetris->x;//¼Ç×¡ÖĞĞÄ·½¿éºá×ø±êµÄÖµ 
+			Temp2=tetris->flag;//¼Ç×¡µ±Ç°¶íÂŞË¹·½¿éµÄĞòºÅ 
+			if(kbhit())//ÅĞ¶Ï¼üÅÌ 
+			{
+				ch=getch();
+				if(ch==75)//×ó¼ü 
+				{
+					tetris->x-=2;
+				}	
+				if(ch==77)//ÓÒ¼ü 
+				{
+					tetris->x+=2;
+				}
+				if(ch==80)//ÏÂ¼ü 
+				{
+					if(ifMove(tetris)!=0)
+					{
+						tetris->y+=2;
+					}
+					if(ifMove(tetris)==0)
+					{
+						tetris->y=FrameY+Frame_height-2;
+					}
+				}
+				if(ch==72)//ÉÏ¼ü 
+				{
+					if( tetris->flag >= 2 && tetris->flag <= 3)//Ò»×Ö 
+					{
+						tetris->flag++;
+						tetris->flag%=2;
+						tetris->flag+=2;
+					}
+					if(tetris->flag>=4 && tetris->flag<=7)//T×Ö 
+					{
+						tetris->flag++;
+						tetris->flag%=4;
+						tetris->flag+=4;
+					}
+					if(tetris->flag>=8 && tetris->flag<=11)//Z×Ö 
+					{
+						tetris->flag++;
+						tetris->flag%=4;
+						tetris->flag+=8;
+					}
+					if(tetris->flag>=12 && tetris->flag<=15)//7×Ö 
+					{
+						tetris->flag++;
+						tetris->flag%=4;
+						tetris->flag+=12;
+					}
+					if(tetris->flag>=16 && tetris->flag<=19)//·´7×Ö 
+					{
+						tetris->flag++;
+						tetris->flag%=4;
+						tetris->flag+=16;
+					}
+				}
+				if(ch==32)//¿Õ¸ñ 
+				{
+					PrintTetris(tetris);
+					while(1)
+					{
+						if(kbhit())
+						{
+							ch = getch();
+							if(ch == 32)
+							{
+								goto label;
+							}
+						}
+					}
+				}
+				if(ch == 27)//ESC 
+				{
+					system("cls");//ÇåÆÁ 
+					memset(a,0,6400*sizeof(int));//³õÊ¼»¯aÊı×é 
+				}
+				if(ifMove(tetris)==0)
+				{
+					tetris->x=Temp1;
+					tetris->flag=Temp2;	
+				} 
+				else
+				{
+					goto label;
+				}
+			}
+			tetris->y++;//Èç¹ûÃ»ÓĞ²Ù×÷Ö¸Áî£¬·½¿éÏòÏÂÒÆ¶¯ 
+			if(ifMove(tetris)==0)//Èç¹ûÏòÏÂÒÆ¶¯ÇÒ²»¿É¶¯£¬·½¿é·ÅÔÚ´Ë´¦ 
+			{
+				tetris->y--;
+				PrintTetris(tetris);
+				Del_Fullline(tetris);
+				break;	
+			} 
+		}
+		for(i=tetris->y-2;i<tetris->y+2;i++)
+		{
+			if(i==FrameY)
+			{
+				system("cls");
+				gotoxy(29,7);
+				printf("   \n");
+				color(12);
+				printf("\t\t\t¡ö¡ö¡ö¡ö    ¡ö      ¡ö      ¡ö¡ö       \n");	
+				printf("\t\t\t¡ö          ¡ö¡ö    ¡ö      ¡ö   ¡ö    \n");
+				printf("\t\t\t¡ö¡ö¡ö      ¡ö  ¡ö  ¡ö      ¡ö    ¡ö   \n");
+				printf("\t\t\t¡ö          ¡ö    ¡ö¡ö      ¡ö   ¡ö    \n");
+				printf("\t\t\t¡ö¡ö¡ö¡ö    ¡ö      ¡ö      ¡ö¡ö       \n");
+				gotoxy(17,18);
+				color(14);
+				printf("ÖØĞÂÍæ-----------1");
+				gotoxy(44,18);
+				printf("²»ÍæÁË-----------2\n");
+				int n;
+				gotoxy(32,20);
+				printf("Ñ¡Ôñ¡¾1/2¡¿£º");
+				color(11);
+				scanf("%d",&n);
+				switch(n)
+				{
+					case 1:
+						system("cls");
+						Replay(tetris);
+						break;
+					case 2:
+						exit(0);
+						break;
+					
+				}	
+			}	
+		}
+		tetris->flag = tetris->next;//Çå³ıÓÒ±ß´°¿ÚµÄÍ¼ĞÎ 
+		tetris->x=FrameX+2*Frame_width+6;
+		tetris->y=FrameY+10;
+		CleanTetris(tetris);	
+	}
+	
+} 
+void Replay(struct Tetris *tetris)
+{
+	system("cls");
+	memset(a,0,6400*sizeof(int));//³õÊ¼»¯aÊı×é£¬·ñÔò²»»áÕı³£ÏÔÊ¾·½¿é£¬µ¼ÖÂÓÎÏ·Ö±½Ó½áÊø
+	DrwaGameframe();//ÖØĞÂÖÆ×÷ÓÎÏ·´°¿Ú
+	Gameplay(); 
+}
   
 
 
