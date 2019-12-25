@@ -639,7 +639,7 @@ void CleanTetris(struct Tetris *tetris)
 }
 void Del_Fullline(struct Tetris *tetris)//µ±Ä³ÐÐÓÐFrame_width-2¸ö·½¿éÊ±£¬ÔòÂúÐÐÏû³ý
 {
-	int k,del_rows=0;//·Ö±ðÓÃÓÚ¼ÇÂ¼Ä³ÐÐ·½¿éµÄ¸öÊýºÍÉ¾³ý·½¿éµÄÐÐÊýµÄ±äÁ¿ 
+	int k,K,del_rows=0;//·Ö±ðÓÃÓÚ¼ÇÂ¼Ä³ÐÐ·½¿éµÄ¸öÊýºÍÉ¾³ý·½¿éµÄÐÐÊýµÄ±äÁ¿ 
 	for(j=FrameY+Frame_height-1;j>=FrameY+1;j--)
 	{//j=22,j>=4,j--
 		k=0;
@@ -656,24 +656,24 @@ void Del_Fullline(struct Tetris *tetris)//µ±Ä³ÐÐÓÐFrame_width-2¸ö·½¿éÊ±£¬ÔòÂúÐÐÏ
 						gotoxy(k,j);
 						printf("  "); //Ò»¶¨ÒªÊÇÁ½¸ö¿Õ¸ñ 
 					}
-					/*
-					for(k=j-1;k>FrameY;k--)//Èç¹ûÉ¾³ýÐÐÒÔÉÏµÄÎ»ÖÃÓÐ·½¿é£¬ÔòÏÈÏû³ý£¬ÔÙ½«·½¿éÏÂÒÆÒ»¸öÎ»ÖÃ 
+					
+					for(K=j-1;K>FrameY;K--)//Èç¹ûÉ¾³ýÐÐÒÔÉÏµÄÎ»ÖÃÓÐ·½¿é£¬ÔòÏÈÏû³ý£¬ÔÙ½«·½¿éÏÂÒÆÒ»¸öÎ»ÖÃ 
 					{
 						for(i=FrameX+2;i<FrameX+2*Frame_width-2;i+=2)
 						{
-							if(a[i][k]==1)
+							if(a[i][K]==1)
 							{
-								a[i][k]=0;
-								gotoxy(i,k);
+								a[i][K]=0;
+								gotoxy(i,K);
 								printf("  ");//Á½¸ö¿Õ¸ñ 
-								a[i][k+1]=1;
-								gotoxy(i,k+1);
+								a[i][K+1]=1;
+								gotoxy(i,K+1);
 								printf("88");
 							}
 								
 						} 
 					}
-					*/
+					
 					j++;//·½¿éÏÂÒÆºó£¬ÖØÐÂÅÐ¶ÏÉ¾³ýÐÐÊÇ·ñÂúÐÐ
 					del_rows++;//¼ÇÂ¼É¾³ý·½¿éµÄÐÐÊý 		
 				}	
